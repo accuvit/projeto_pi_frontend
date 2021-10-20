@@ -1,0 +1,26 @@
+services:
+  frontend:
+    build: .
+    links:
+      - 'backend:localhost'
+    ports:
+      - '3000:3000'
+  backend:
+    build: https://github.com/accuvit/bibliwebteca-backend.git
+    environment:
+      PORT: 3333
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: toor
+      ME_CONFIG_MONGODB_URL: mongodb://root:toor@mongo:27017/
+    links:
+      - 'db:mongo'
+    ports:
+      - 3333:3333
+  db:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: toor
+    ports:
+      - 27017:27017
